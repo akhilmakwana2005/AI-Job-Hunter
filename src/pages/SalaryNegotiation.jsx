@@ -96,7 +96,7 @@ const SalaryNegotiation = () => {
       <div className="w-full xl:w-1/3 flex flex-col gap-6">
         <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
           <div className="flex items-center gap-2 mb-6 border-b border-slate-100 dark:border-slate-700 pb-4">
-            <Sparkles size={20} className="text-emerald-600 dark:text-emerald-400" />
+            <Sparkles size={20} className="text-blue-600 dark:text-blue-400" />
             <h2 className="text-lg font-bold text-slate-900 dark:text-white">Negotiation AI</h2>
           </div>
 
@@ -112,7 +112,7 @@ const SalaryNegotiation = () => {
                     required
                     type="text"
                     placeholder="Company"
-                    className="pl-9 w-full rounded-lg border border-slate-300 dark:border-slate-600 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white dark:bg-slate-900 text-slate-900 dark:text-white"
+                    className="pl-9 w-full rounded-lg border border-slate-300 dark:border-slate-600 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-slate-900 text-slate-900 dark:text-white"
                     value={formData.companyName}
                     onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
                   />
@@ -128,7 +128,7 @@ const SalaryNegotiation = () => {
                     required
                     type="text"
                     placeholder="Job Title"
-                    className="pl-9 w-full rounded-lg border border-slate-300 dark:border-slate-600 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white dark:bg-slate-900 text-slate-900 dark:text-white"
+                    className="pl-9 w-full rounded-lg border border-slate-300 dark:border-slate-600 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-slate-900 text-slate-900 dark:text-white"
                     value={formData.jobTitle}
                     onChange={(e) => setFormData({ ...formData, jobTitle: e.target.value })}
                   />
@@ -147,7 +147,7 @@ const SalaryNegotiation = () => {
                     required
                     type="text"
                     placeholder="$100k"
-                    className="pl-9 w-full rounded-lg border border-slate-300 dark:border-slate-600 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white dark:bg-slate-900 text-slate-900 dark:text-white"
+                    className="pl-9 w-full rounded-lg border border-slate-300 dark:border-slate-600 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-slate-900 text-slate-900 dark:text-white"
                     value={formData.offeredSalary}
                     onChange={(e) => setFormData({ ...formData, offeredSalary: e.target.value })}
                   />
@@ -163,7 +163,7 @@ const SalaryNegotiation = () => {
                     required
                     type="text"
                     placeholder="$115k"
-                    className="pl-9 w-full rounded-lg border border-slate-300 dark:border-slate-600 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white dark:bg-slate-900 text-slate-900 dark:text-white"
+                    className="pl-9 w-full rounded-lg border border-slate-300 dark:border-slate-600 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-slate-900 text-slate-900 dark:text-white"
                     value={formData.targetSalary}
                     onChange={(e) => setFormData({ ...formData, targetSalary: e.target.value })}
                   />
@@ -178,7 +178,7 @@ const SalaryNegotiation = () => {
               <input
                 type="text"
                 placeholder="e.g. Sign-on bonus, equity, remote work"
-                className="w-full rounded-lg border border-slate-300 dark:border-slate-600 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white dark:bg-slate-900 text-slate-900 dark:text-white"
+                className="w-full rounded-lg border border-slate-300 dark:border-slate-600 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-slate-900 text-slate-900 dark:text-white"
                 value={formData.benefits}
                 onChange={(e) => setFormData({ ...formData, benefits: e.target.value })}
               />
@@ -191,7 +191,7 @@ const SalaryNegotiation = () => {
               <textarea
                 placeholder="Why do you deserve more? (e.g. Competing offer, rare skills, senior experience)"
                 rows={3}
-                className="w-full rounded-lg border border-slate-300 dark:border-slate-600 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 resize-none bg-white dark:bg-slate-900 text-slate-900 dark:text-white"
+                className="w-full rounded-lg border border-slate-300 dark:border-slate-600 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none bg-white dark:bg-slate-900 text-slate-900 dark:text-white"
                 value={formData.leveragePoints}
                 onChange={(e) => setFormData({ ...formData, leveragePoints: e.target.value })}
               />
@@ -203,7 +203,7 @@ const SalaryNegotiation = () => {
               className={`w-full flex justify-center items-center gap-2 rounded-lg py-2.5 text-sm font-bold transition-all shadow-md ${
                 cooldown > 0 
                   ? 'bg-amber-500 text-white cursor-not-allowed opacity-80'
-                  : 'bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white disabled:opacity-50'
+                  : 'bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white disabled:opacity-50'
               }`}
             >
               {isGenerating ? (
@@ -238,8 +238,8 @@ const SalaryNegotiation = () => {
                   onClick={() => { setGeneratedEmail(item); setCopied(false); }}
                   className={`p-3 rounded-xl border cursor-pointer transition-colors ${
                     generatedEmail?._id === item._id 
-                      ? 'border-emerald-500 bg-emerald-50 dark:bg-emerald-900/30' 
-                      : 'border-slate-200 dark:border-slate-700 hover:border-emerald-300 dark:hover:border-emerald-500/50'
+                      ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30' 
+                      : 'border-slate-200 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-500/50'
                   }`}
                 >
                   <div className="flex justify-between items-start">
@@ -253,7 +253,7 @@ const SalaryNegotiation = () => {
                   </div>
                   <div className="flex gap-2 mt-2">
                     <span className="text-[10px] font-bold bg-rose-50 dark:bg-rose-900/30 text-rose-600 dark:text-rose-400 px-1.5 py-0.5 rounded">Offered: {item.offeredSalary}</span>
-                    <span className="text-[10px] font-bold bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 px-1.5 py-0.5 rounded">Target: {item.targetSalary}</span>
+                    <span className="text-[10px] font-bold bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 px-1.5 py-0.5 rounded">Target: {item.targetSalary}</span>
                   </div>
                 </div>
               ))
@@ -277,7 +277,7 @@ const SalaryNegotiation = () => {
                 onClick={copyToClipboard}
                 className="flex flex-shrink-0 items-center gap-2 px-4 py-2 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg text-sm font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors shadow-sm"
               >
-                {copied ? <Check size={16} className="text-emerald-500 dark:text-emerald-400" /> : <Copy size={16} />}
+                {copied ? <Check size={16} className="text-blue-500 dark:text-blue-400" /> : <Copy size={16} />}
                 {copied ? 'Copied!' : 'Copy Email'}
               </button>
             </div>
@@ -294,10 +294,10 @@ const SalaryNegotiation = () => {
           </div>
         ) : (
           <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 flex flex-col items-center justify-center text-center p-12 h-full min-h-[500px] relative overflow-hidden">
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-emerald-50/50 via-white to-white dark:from-emerald-900/10 dark:via-slate-800 dark:to-slate-800 z-0"></div>
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-50/50 via-white to-white dark:from-blue-900/10 dark:via-slate-800 dark:to-slate-800 z-0"></div>
             
-            <div className="relative z-10 w-24 h-24 bg-gradient-to-br from-emerald-100 to-emerald-50 dark:from-emerald-900/40 dark:to-emerald-800/20 rounded-full flex items-center justify-center mb-6 shadow-inner border border-emerald-100 dark:border-emerald-800">
-              <DollarSign size={40} className="text-emerald-600 dark:text-emerald-400" />
+            <div className="relative z-10 w-24 h-24 bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/40 dark:to-blue-800/20 rounded-full flex items-center justify-center mb-6 shadow-inner border border-blue-100 dark:border-blue-800">
+              <DollarSign size={40} className="text-blue-600 dark:text-blue-400" />
             </div>
             <h2 className="relative z-10 text-2xl font-bold text-slate-900 dark:text-white mb-3">Salary Negotiation AI</h2>
             <p className="relative z-10 text-slate-500 dark:text-slate-400 max-w-md mx-auto leading-relaxed text-sm">
