@@ -1,5 +1,6 @@
 // Background service worker for handling API calls to our Node.js Backend
 
+// Change this to your production API URL before publishing (e.g., https://your-backend.onrender.com/api/v1)
 const API_BASE_URL = 'http://localhost:5000/api/v1';
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {

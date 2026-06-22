@@ -11,11 +11,23 @@
   ],
   "host_permissions": [
     "http://localhost:5000/*",
+    "https://*.onrender.com/*",
+    "https://*.vercel.app/*",
     "https://*.linkedin.com/*"
   ],
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  },
   "action": {
     "default_popup": "popup.html",
-    "default_title": "AI Job Hunter"
+    "default_title": "AI Job Hunter",
+    "default_icon": {
+      "16": "icon16.png",
+      "48": "icon48.png",
+      "128": "icon128.png"
+    }
   },
   "background": {
     "service_worker": "background.js"
@@ -26,7 +38,7 @@
       "js": ["content.js"]
     },
     {
-      "matches": ["http://localhost:5173/*", "http://127.0.0.1:5173/*"],
+      "matches": ["http://localhost:5173/*", "http://127.0.0.1:5173/*", "*://ai-job-hunter-pi.vercel.app/*"],
       "js": ["syncToken.js"]
     }
   ]
