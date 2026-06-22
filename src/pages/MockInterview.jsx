@@ -8,12 +8,54 @@ const MockInterview = () => {
   const [history, setHistory] = useState([]);
   const [currentAnswer, setCurrentAnswer] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isListening, setIsListening] = useState(false);
   
   const chatEndRef = useRef(null);
+  const recognitionRef = useRef(null);
 
   useEffect(() => {
+    // Initialize Web Speech API
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (SpeechRecognition) {
+      recognitionRef.current = new SpeechRecognition();
+      recognitionRef.current.continuous = true;
+      recognitionRef.current.interimResults = true;
+
+      recognitionRef.current.onresult = (event) => {
+        let transcript = '';
+        for (let i = 0; i < event.results.length; i++) {
+          transcript += event.results[i][0].transcript;
+        }
+        setCurrentAnswer(transcript);
+      };
+
+      recognitionRef.current.onerror = (event) => {
+        console.error('Speech recognition error', event.error);
+        setIsListening(false);
+      };
+
+      recognitionRef.current.onend = () => {
+        setIsListening(false);
+      };
+    }
+
     fetchHistory();
   }, []);
+
+  const toggleListening = () => {
+    if (isListening) {
+      recognitionRef.current?.stop();
+      setIsListening(false);
+    } else {
+      if (!currentAnswer) setCurrentAnswer(''); 
+      try {
+        recognitionRef.current?.start();
+        setIsListening(true);
+      } catch (e) {
+        console.error("Microphone access denied or already started", e);
+      }
+    }
+  };
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -213,13 +255,22 @@ const MockInterview = () => {
                   <button onClick={() => setSession(null)} className="text-blue-600 dark:text-blue-400 font-medium hover:underline">Start a new session</button>
                </div>
             ) : (
-              <div className="flex items-end gap-3 max-w-4xl mx-auto">
-                <button className="p-3 bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-600 hover:text-slate-700 dark:hover:text-slate-200 rounded-full transition-colors flex-shrink-0">
+              <div className="flex items-end gap-3 max-w-4xl mx-auto relative">
+                {isListening && (
+                  <div className="absolute -top-8 left-4 text-xs font-bold text-rose-500 animate-pulse flex items-center gap-1">
+                    <span className="w-2 h-2 rounded-full bg-rose-500"></span> Listening...
+                  </div>
+                )}
+                <button 
+                  onClick={toggleListening}
+                  className={`p-3 rounded-full transition-colors flex-shrink-0 ${isListening ? 'bg-rose-100 dark:bg-rose-900/30 text-rose-600 shadow-[0_0_15px_rgba(225,29,72,0.3)] animate-pulse' : 'bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-600 hover:text-slate-700 dark:hover:text-slate-200'}`}
+                  title={isListening ? 'Stop recording' : 'Start speaking'}
+                >
                   <Mic size={20} />
                 </button>
                 <textarea
-                  className="flex-1 max-h-32 min-h-[50px] p-3 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none text-sm transition-colors"
-                  placeholder="Type your answer here or use the microphone..."
+                  className={`flex-1 max-h-32 min-h-[50px] p-3 border ${isListening ? 'border-rose-300 dark:border-rose-700 ring-1 ring-rose-200' : 'border-slate-300 dark:border-slate-600'} bg-white dark:bg-slate-900 text-slate-900 dark:text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none text-sm transition-colors`}
+                  placeholder="Type your answer here or click the microphone to speak..."
                   value={currentAnswer}
                   onChange={(e) => setCurrentAnswer(e.target.value)}
                   onKeyDown={(e) => {
