@@ -209,9 +209,21 @@ const ApplicationsTracker = () => {
                       </div>
 
                       <div className="flex justify-between items-center pt-3 border-t border-slate-100">
-                        <div className="flex items-center text-xs text-slate-400 font-medium">
-                          <Calendar size={12} className="mr-1" />
-                          {new Date(app.dateApplied).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
+                        <div className="flex flex-col gap-2">
+                          <div className="flex items-center text-xs text-slate-400 font-medium">
+                            <Calendar size={12} className="mr-1" />
+                            {new Date(app.dateApplied).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
+                          </div>
+                          {app.status === 'Interviewing' && (
+                            <a 
+                              href={`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(`Interview: ${app.company}`)}&details=${encodeURIComponent(`Position: ${app.position}\n\nVia AI Job Hunter Agent`)}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-[10px] font-bold text-indigo-600 hover:text-indigo-800 flex items-center"
+                            >
+                              + Add to Calendar
+                            </a>
+                          )}
                         </div>
                         <div className="flex items-center gap-3">
                           <select 

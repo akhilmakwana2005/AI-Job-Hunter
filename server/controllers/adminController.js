@@ -38,3 +38,20 @@ export const getAdminStats = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+// @desc    Promote a user to Pro
+// @route   PUT /api/v1/admin/users/:id/promote
+// @access  Private/Admin
+export const promoteUserToPro = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    user.isPro = true;
+    await user.save();
+    res.json({ message: 'User promoted to Pro successfully', user });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

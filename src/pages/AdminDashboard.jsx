@@ -40,6 +40,27 @@ const AdminDashboard = () => {
     { title: 'Negotiations Done', value: stats?.totalNegotiations || 0, icon: Activity, color: 'text-rose-600', bg: 'bg-rose-100 dark:bg-rose-900/30' }
   ];
 
+  const handlePromote = async (userId) => {
+    try {
+      await adminService.promoteUser(userId);
+      // Update local state to reflect change immediately
+      setData(prev => ({
+        ...prev,
+        recentUsers: prev.recentUsers.map(u => 
+          u._id === userId ? { ...u, isPro: true } : u
+        ),
+        stats: {
+          ...prev.stats,
+          proUsers: prev.stats.proUsers + 1,
+          revenue: prev.stats.revenue + 499
+        }
+      }));
+    } catch (error) {
+      console.error('Failed to promote user', error);
+      alert('Failed to promote user');
+    }
+  };
+
   return (
     <div className="max-w-6xl mx-auto pb-10">
       <div className="mb-8">
@@ -79,11 +100,12 @@ const AdminDashboard = () => {
                 <th className="px-6 py-4">Email</th>
                 <th className="px-6 py-4">Plan</th>
                 <th className="px-6 py-4">Joined At</th>
+                <th className="px-6 py-4">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 dark:divide-slate-700/50">
               {recentUsers.map((u, i) => (
-                <tr key={i} className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                <tr key={u._id || i} className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
                       <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold text-xs uppercase">
@@ -106,6 +128,16 @@ const AdminDashboard = () => {
                   </td>
                   <td className="px-6 py-4 text-sm text-slate-500 dark:text-slate-400 font-medium">
                     {new Date(u.createdAt).toLocaleDateString()}
+                  </td>
+                  <td className="px-6 py-4">
+                    {!u.isPro && (
+                      <button 
+                        onClick={() => handlePromote(u._id)}
+                        className="text-xs font-bold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-md transition-colors"
+                      >
+                        Make Pro
+                      </button>
+                    )}
                   </td>
                 </tr>
               ))}

@@ -188,6 +188,10 @@ export const adminService = {
   getStats: async () => {
     const response = await api.get('/admin/stats');
     return response.data;
+  },
+  promoteUser: async (id) => {
+    const response = await api.put(`/admin/users/${id}/promote`);
+    return response.data;
   }
 };
 
