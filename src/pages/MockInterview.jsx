@@ -57,8 +57,27 @@ const MockInterview = () => {
     }
   };
 
+  const speakText = (text) => {
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel(); // Stop any ongoing speech
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.rate = 1.0;
+      utterance.pitch = 1.0;
+      window.speechSynthesis.speak(utterance);
+    }
+  };
+
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    
+    // Auto-speak the latest AI question if session is active
+    if (session && session.status !== 'completed' && session.questions && session.questions.length > 0) {
+      const currentQ = session.questions[session.currentQuestionIndex];
+      // Only speak if user hasn't answered it yet
+      if (currentQ && !currentQ.userAnswer && !isSubmitting) {
+        speakText(currentQ.questionText);
+      }
+    }
   }, [session?.questions, session?.currentQuestionIndex]);
 
   const fetchHistory = async () => {
