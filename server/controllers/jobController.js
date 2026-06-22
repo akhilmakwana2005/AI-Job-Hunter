@@ -6,7 +6,7 @@ import Job from '../models/Job.js';
 // @access  Private
 export const getJobs = async (req, res) => {
   try {
-    const { search, location, workType } = req.query;
+    const { search, location, workType, experienceLevel } = req.query;
 
     const mockJobs = [
       { job_id: "mock_1", job_title: "Senior Full Stack Developer", employer_name: "Tech Corp", job_is_remote: true, job_city: "", job_country: "", job_required_experience: { required_experience_in_months: 60 }, job_min_salary: 1500000, job_max_salary: 2500000, job_posted_at_datetime_utc: new Date().toISOString(), job_apply_link: "#" },
