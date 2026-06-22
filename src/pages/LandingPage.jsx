@@ -43,7 +43,6 @@ const LandingPage = () => {
           </div>
           <div className="hidden md:flex gap-10">
             <a href="#features" className="text-sm font-bold text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-white transition-colors">Features</a>
-            <a href="#how-it-works" className="text-sm font-bold text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-white transition-colors">How it works</a>
             <a href="#pricing" className="text-sm font-bold text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-white transition-colors">Pricing</a>
           </div>
           <div className="flex gap-4 items-center">
