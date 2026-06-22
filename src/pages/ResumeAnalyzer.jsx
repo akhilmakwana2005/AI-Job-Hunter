@@ -21,12 +21,12 @@ const ResumeAnalyzer = () => {
     return () => clearInterval(timer);
   }, [cooldown]);
   const [fileError, setFileError] = useState('');
-  
+
   // Rewriter States
   const [rewriteText, setRewriteText] = useState('');
   const [rewrittenOptions, setRewrittenOptions] = useState([]);
   const [isRewriting, setIsRewriting] = useState(false);
-
+  s
   // Full Recreate States
   const [recreatedResume, setRecreatedResume] = useState(null);
   const [isRecreating, setIsRecreating] = useState(false);
@@ -62,7 +62,7 @@ const ResumeAnalyzer = () => {
         e.target.value = null;
         return;
       }
-      
+
       setFileError('');
       setFile(selectedFile);
     }
@@ -78,16 +78,16 @@ const ResumeAnalyzer = () => {
       return;
     }
     setFileError('');
-    
+
     setIsAnalyzing(true);
     setAnimatedScore(0);
     setResults(null);
     setCheckedSuggestions({});
-    
+
     const statuses = [
-      'Extracting text from resume...', 
-      'Analyzing keyword density...', 
-      'Evaluating ATS compatibility...', 
+      'Extracting text from resume...',
+      'Analyzing keyword density...',
+      'Evaluating ATS compatibility...',
       'Generating AI insights...'
     ];
     let statusIndex = 0;
@@ -166,8 +166,8 @@ const ResumeAnalyzer = () => {
     setIsRecreating(true);
     setRecreatedResume(null);
     try {
-      const data = await resumeService.recreateResume({ 
-        resumeId: results._id, 
+      const data = await resumeService.recreateResume({
+        resumeId: results._id,
         targetRole: targetRole || 'Professional'
       });
       setRecreatedResume(data);
@@ -188,10 +188,10 @@ const ResumeAnalyzer = () => {
 
   const handleDownloadPDF = () => {
     if (!printRef.current) return;
-    
+
     const content = printRef.current.innerHTML;
     const printWindow = window.open('', '', 'height=800,width=800');
-    
+
     printWindow.document.write('<html><head><title>Resume - ' + (recreatedResume?.fullName || 'ATS') + '</title>');
     printWindow.document.write('<script src="https://cdn.tailwindcss.com"></script>');
     // Setting @page margin to 0 completely removes browser headers and footers (date, URL)
@@ -201,7 +201,7 @@ const ResumeAnalyzer = () => {
     printWindow.document.write(content);
     printWindow.document.write('</div></body></html>');
     printWindow.document.close();
-    
+
     setTimeout(() => {
       printWindow.focus();
       printWindow.print();
@@ -239,9 +239,9 @@ const ResumeAnalyzer = () => {
             <div>
               <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Upload Resume (PDF/DOCX)</label>
               <div className={`border-2 border-dashed rounded-xl p-8 text-center transition-all cursor-pointer relative group ${file ? 'border-blue-400 bg-blue-50/50 dark:bg-blue-900/30' : 'border-slate-300 dark:border-slate-600 hover:border-blue-400 dark:hover:border-blue-500 hover:bg-slate-50 dark:hover:bg-slate-800'}`}>
-                <input 
-                  type="file" 
-                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" 
+                <input
+                  type="file"
+                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                   accept=".pdf,.doc,.docx"
                   onChange={handleFileChange}
                 />
@@ -309,8 +309,8 @@ const ResumeAnalyzer = () => {
               </div>
             ) : (
               history.map((item, idx) => (
-                <div 
-                  key={item._id || idx} 
+                <div
+                  key={item._id || idx}
                   onClick={() => { setResults(item); setAnimatedScore(0); }}
                   className={`p-4 rounded-xl border cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md ${results?._id === item._id ? 'border-blue-500 bg-blue-50/50 dark:bg-blue-900/30 shadow-sm' : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800'}`}
                 >
@@ -334,7 +334,7 @@ const ResumeAnalyzer = () => {
           <div className="bg-white rounded-xl shadow-sm border border-slate-200 flex flex-col items-center justify-center text-center p-12 h-full min-h-[500px] relative overflow-hidden">
             {/* Background glowing effect */}
             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-blue-500 opacity-10 blur-3xl rounded-full animate-pulse"></div>
-            
+
             <div className="w-24 h-24 bg-blue-50 rounded-full flex items-center justify-center mb-6 relative">
               <FileText size={40} className="text-blue-600" />
               <div className="absolute inset-0 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
@@ -348,15 +348,15 @@ const ResumeAnalyzer = () => {
             <div className="bg-gradient-to-br from-white to-slate-50 dark:from-slate-800 dark:to-slate-900/80 rounded-xl shadow-md border border-slate-200 dark:border-slate-700 p-8 flex flex-col md:flex-row items-center gap-10 hover:shadow-lg transition-shadow">
               <div className="relative w-40 h-40 flex-shrink-0 group">
                 <svg className="w-full h-full -rotate-90" viewBox="0 0 36 36">
-                  <path 
-                    className="text-slate-100" 
-                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" 
+                  <path
+                    className="text-slate-100"
+                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                     fill="none" stroke="currentColor" strokeWidth="3"
                   />
-                  <path 
-                    className={`text-blue-500 transition-all duration-1000 ease-out`} 
-                    strokeDasharray={`${animatedScore}, 100`} 
-                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" 
+                  <path
+                    className={`text-blue-500 transition-all duration-1000 ease-out`}
+                    strokeDasharray={`${animatedScore}, 100`}
+                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                     fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round"
                   />
                 </svg>
@@ -367,7 +367,7 @@ const ResumeAnalyzer = () => {
                   <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">ATS Score</span>
                 </div>
               </div>
-              
+
               <div>
                 <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-blue-50 text-blue-700 mb-3">
                   <Sparkles size={14} /> AI Analysis Complete
@@ -376,8 +376,8 @@ const ResumeAnalyzer = () => {
                   {animatedScore >= 80 ? "Excellent Match! 🎯" : animatedScore >= 60 ? "Good, but needs work 📈" : "Needs Major Optimization ⚠️"}
                 </h2>
                 <p className="text-slate-600 text-lg leading-relaxed font-medium">
-                  {animatedScore >= 80 
-                    ? "Your resume is highly optimized for ATS systems and perfectly aligns with the target role." 
+                  {animatedScore >= 80
+                    ? "Your resume is highly optimized for ATS systems and perfectly aligns with the target role."
                     : "Your resume needs structural changes and missing keywords to pass through ATS systems effectively."}
                 </p>
               </div>
@@ -454,11 +454,10 @@ const ResumeAnalyzer = () => {
                 <button
                   onClick={handleRecreate}
                   disabled={isRecreating || cooldown > 0}
-                  className={`flex items-center justify-center gap-2 font-bold py-2 px-5 rounded-lg transition-all shadow-md hover:shadow-lg disabled:opacity-80 disabled:cursor-not-allowed ${
-                    cooldown > 0 
-                      ? 'bg-amber-500 hover:bg-amber-600 text-white' 
+                  className={`flex items-center justify-center gap-2 font-bold py-2 px-5 rounded-lg transition-all shadow-md hover:shadow-lg disabled:opacity-80 disabled:cursor-not-allowed ${cooldown > 0
+                      ? 'bg-amber-500 hover:bg-amber-600 text-white'
                       : 'bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white'
-                  }`}
+                    }`}
                 >
                   {isRecreating ? (
                     <><RefreshCw size={18} className="animate-spin" /> AI is Working...</>
@@ -497,12 +496,11 @@ const ResumeAnalyzer = () => {
 
               <div className="space-y-3">
                 {results.analysis.suggestions.map((sug, i) => (
-                  <div 
-                    key={i} 
+                  <div
+                    key={i}
                     onClick={() => toggleSuggestion(i)}
-                    className={`flex gap-4 items-start p-4 rounded-xl shadow-sm border transition-all cursor-pointer ${
-                      checkedSuggestions[i] ? 'bg-emerald-50 dark:bg-emerald-900/20 border-emerald-200 dark:border-emerald-800/50' : 'bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-500'
-                    }`}
+                    className={`flex gap-4 items-start p-4 rounded-xl shadow-sm border transition-all cursor-pointer ${checkedSuggestions[i] ? 'bg-emerald-50 dark:bg-emerald-900/20 border-emerald-200 dark:border-emerald-800/50' : 'bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-500'
+                      }`}
                   >
                     <div className="mt-0.5 flex-shrink-0">
                       {checkedSuggestions[i] ? (
@@ -511,9 +509,8 @@ const ResumeAnalyzer = () => {
                         <Circle size={22} className="text-slate-300" />
                       )}
                     </div>
-                    <p className={`text-sm font-medium leading-relaxed transition-all ${
-                      checkedSuggestions[i] ? 'text-emerald-700 line-through opacity-70' : 'text-slate-700'
-                    }`}>
+                    <p className={`text-sm font-medium leading-relaxed transition-all ${checkedSuggestions[i] ? 'text-emerald-700 line-through opacity-70' : 'text-slate-700'
+                      }`}>
                       {sug}
                     </p>
                   </div>
@@ -564,7 +561,7 @@ const ResumeAnalyzer = () => {
                         <div className="flex-1">
                           <p className="text-sm font-medium leading-relaxed">{opt}</p>
                         </div>
-                        <button 
+                        <button
                           onClick={() => handleCopy(opt)}
                           className="h-8 w-8 rounded bg-white/10 flex items-center justify-center hover:bg-white/20 hover:text-blue-300 transition-colors flex-shrink-0"
                           title="Copy to clipboard"
@@ -599,7 +596,7 @@ const ResumeAnalyzer = () => {
                 {/* Resume Paper Preview */}
                 <div className="bg-white rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-slate-200 overflow-hidden relative">
                   <div ref={printRef} className="print-content bg-white w-full max-w-3xl mx-auto p-8 text-slate-900 font-serif text-[10pt] leading-snug">
-                    
+
                     {/* Header */}
                     <div className="text-center mb-4 border-b-2 border-slate-900 pb-3">
                       <h1 className="text-2xl font-bold text-slate-900 mb-1 uppercase tracking-wide">{recreatedResume.fullName}</h1>
@@ -608,14 +605,14 @@ const ResumeAnalyzer = () => {
                         {recreatedResume.contact?.phone && <span>• {recreatedResume.contact.phone}</span>}
                         {recreatedResume.contact?.linkedin && (
                           <span>
-                            • <a 
-                                href={recreatedResume.contact.linkedin.startsWith('http') ? recreatedResume.contact.linkedin : `https://${recreatedResume.contact.linkedin}`} 
-                                target="_blank" 
-                                rel="noreferrer" 
-                                className="text-slate-700 font-bold hover:text-blue-600 underline"
-                              >
-                                LinkedIn
-                              </a>
+                            • <a
+                              href={recreatedResume.contact.linkedin.startsWith('http') ? recreatedResume.contact.linkedin : `https://${recreatedResume.contact.linkedin}`}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="text-slate-700 font-bold hover:text-blue-600 underline"
+                            >
+                              LinkedIn
+                            </a>
                           </span>
                         )}
                       </div>
@@ -635,7 +632,7 @@ const ResumeAnalyzer = () => {
                         <h2 className="text-[10pt] font-bold uppercase tracking-wider text-slate-900 border-b border-slate-400 pb-0.5 mb-1.5">Core Competencies</h2>
                         <div className="flex flex-wrap gap-x-2 gap-y-0.5">
                           {recreatedResume.skills.map((skill, i) => (
-                            <span key={i} className="text-[9.5pt] font-semibold">{skill} {i !== recreatedResume.skills.length -1 && ' | '}</span>
+                            <span key={i} className="text-[9.5pt] font-semibold">{skill} {i !== recreatedResume.skills.length - 1 && ' | '}</span>
                           ))}
                         </div>
                       </div>
@@ -685,7 +682,7 @@ const ResumeAnalyzer = () => {
                 </div>
               </div>
             )}
-            
+
           </div>
         ) : (
           <div className="bg-white rounded-xl shadow-sm border border-slate-200 flex flex-col items-center justify-center text-center p-12 h-full min-h-[500px]">

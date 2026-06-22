@@ -1,9 +1,9 @@
-import { Search as SearchIcon, Bell, Moon, Sun } from 'lucide-react';
+import { Search as SearchIcon, Bell, Moon, Sun, Menu } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-const TopNavbar = () => {
+const TopNavbar = ({ toggleSidebar }) => {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -56,11 +56,19 @@ const TopNavbar = () => {
   };
 
   return (
-    <header className="h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-6 z-50 relative shadow-sm transition-colors duration-300">
-      <div className="flex-1 max-w-2xl relative z-50">
-        <div className="relative">
+    <header className="h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-4 sm:px-6 z-30 relative shadow-sm transition-colors duration-300">
+      <div className="flex items-center flex-1 max-w-2xl relative z-40 gap-3">
+        {toggleSidebar && (
+          <button 
+            onClick={toggleSidebar} 
+            className="lg:hidden p-2 -ml-2 text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors"
+          >
+            <Menu size={24} />
+          </button>
+        )}
+        <div className="relative flex-1">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <SearchIcon className="h-5 w-5 text-slate-400" />
+            <SearchIcon className="h-4 w-4 sm:h-5 sm:w-5 text-slate-400" />
           </div>
           <input
             type="text"
