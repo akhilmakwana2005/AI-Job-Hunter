@@ -35,10 +35,7 @@ const ApplicationsTracker = () => {
     e.preventDefault(); // Necessary to allow dropping
   };
 
-  const handleDrop = async (e, newStatus) => {
-    e.preventDefault();
-    const appId = e.dataTransfer.getData('appId');
-    
+  const handleStatusChange = async (appId, newStatus) => {
     // Optimistic update
     setApplications(prev => prev.map(app => 
       app._id === appId ? { ...app, status: newStatus } : app
@@ -51,6 +48,12 @@ const ApplicationsTracker = () => {
       console.error('Failed to update status', error);
       fetchApplications(); // Revert on failure
     }
+  };
+
+  const handleDrop = async (e, newStatus) => {
+    e.preventDefault();
+    const appId = e.dataTransfer.getData('appId');
+    if(appId) handleStatusChange(appId, newStatus);
   };
 
   const handleAddSubmit = async (e) => {
@@ -174,13 +177,22 @@ const ApplicationsTracker = () => {
                           <Calendar size={12} className="mr-1" />
                           {new Date(app.dateApplied).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
                         </div>
-                        <button 
-                          onClick={() => handleDelete(app._id)}
-                          className="text-slate-400 hover:text-rose-600 transition-colors"
-                          title="Delete Application"
-                        >
-                          <Trash2 size={16} />
-                        </button>
+                        <div className="flex items-center gap-3">
+                          <select 
+                            className="text-[10px] sm:hidden border border-slate-200 rounded p-1 text-slate-600 bg-slate-50 focus:outline-none focus:border-indigo-400"
+                            value={app.status}
+                            onChange={(e) => handleStatusChange(app._id, e.target.value)}
+                          >
+                            {COLUMNS.map(c => <option key={c} value={c}>{c}</option>)}
+                          </select>
+                          <button 
+                            onClick={() => handleDelete(app._id)}
+                            className="text-slate-400 hover:text-rose-600 transition-colors p-1"
+                            title="Delete Application"
+                          >
+                            <Trash2 size={16} />
+                          </button>
+                        </div>
                       </div>
                     </div>
                   ))}
