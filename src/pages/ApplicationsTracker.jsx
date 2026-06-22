@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Plus, MoreVertical, MapPin, IndianRupee, Calendar, GripVertical, Trash2 } from 'lucide-react';
+import { Plus, MapPin, IndianRupee, Calendar, GripVertical, Trash2, Download } from 'lucide-react';
 import { applicationService } from '../services/api';
 
 const COLUMNS = ['Saved', 'Applied', 'Interviewing', 'Offered', 'Rejected'];
@@ -25,6 +25,34 @@ const ApplicationsTracker = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleExportCSV = () => {
+    if (applications.length === 0) return alert('No applications to export');
+    
+    const headers = ['Company', 'Position', 'Location', 'Salary', 'Status', 'Date Applied', 'Source'];
+    const csvRows = applications.map(app => {
+      return [
+        `"${app.company || ''}"`,
+        `"${app.position || ''}"`,
+        `"${app.location || ''}"`,
+        `"${app.salary || ''}"`,
+        `"${app.status || ''}"`,
+        `"${new Date(app.dateApplied).toLocaleDateString()}"`,
+        `"${app.source || 'Manual'}"`
+      ].join(',');
+    });
+    
+    const csvString = [headers.join(','), ...csvRows].join('\n');
+    const blob = new Blob([csvString], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.setAttribute('hidden', '');
+    a.setAttribute('href', url);
+    a.setAttribute('download', 'job_applications.csv');
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
   };
 
   const handleDragStart = (e, appId) => {
@@ -99,12 +127,20 @@ const ApplicationsTracker = () => {
           <h1 className="text-2xl font-bold text-slate-900">Applications Board</h1>
           <p className="text-slate-500 text-sm">Drag and drop to update application status.</p>
         </div>
-        <button 
-          onClick={() => setShowAddModal(true)}
-          className="inline-flex shrink-0 items-center justify-center px-4 py-2.5 sm:py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 transition-colors w-full sm:w-auto"
-        >
-          <Plus size={16} className="mr-2" /> Add Application
-        </button>
+        <div className="flex w-full sm:w-auto gap-3">
+          <button 
+            onClick={handleExportCSV}
+            className="inline-flex shrink-0 items-center justify-center px-4 py-2.5 sm:py-2 border border-slate-300 text-sm font-medium rounded-md shadow-sm text-slate-700 bg-white hover:bg-slate-50 transition-colors flex-1 sm:flex-none"
+          >
+            <Download size={16} className="mr-2" /> Export CSV
+          </button>
+          <button 
+            onClick={() => setShowAddModal(true)}
+            className="inline-flex shrink-0 items-center justify-center px-4 py-2.5 sm:py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 transition-colors flex-1 sm:flex-none"
+          >
+            <Plus size={16} className="mr-2" /> Add Application
+          </button>
+        </div>
       </div>
 
       {isLoading ? (

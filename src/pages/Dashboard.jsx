@@ -7,7 +7,8 @@ import {
   MapPin, 
   IndianRupee, 
   CheckCircle,
-  AlertCircle
+  AlertCircle,
+  Puzzle
 } from 'lucide-react';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 import { useSelector } from 'react-redux';
@@ -98,9 +99,25 @@ const Dashboard = () => {
           <h1 className="text-3xl font-bold tracking-tight mb-2">Welcome back, {firstName}! 👋</h1>
           <p className="text-indigo-100 text-lg">Here is what's happening with your job search today.</p>
         </div>
-        <button className="mt-6 md:mt-0 inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-indigo-700 bg-white hover:bg-indigo-50 shadow-sm transition-colors self-start md:self-auto">
+        <button className="mt-6 md:mt-0 inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-indigo-700 bg-white hover:bg-indigo-50 shadow-sm transition-colors self-start md:self-auto relative z-10">
           <Briefcase size={20} className="mr-2" />
           Find New Jobs
+        </button>
+      </div>
+
+      {/* Chrome Extension Promo Banner */}
+      <div className="bg-gradient-to-r from-slate-900 to-slate-800 dark:from-slate-800 dark:to-slate-900 rounded-2xl p-6 text-white flex flex-col sm:flex-row items-center justify-between shadow-lg relative overflow-hidden border border-slate-800 dark:border-slate-700">
+        <div className="flex items-center gap-4 mb-4 sm:mb-0 relative z-10 w-full sm:w-auto">
+          <div className="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/30 shrink-0">
+            <Puzzle className="w-6 h-6 text-white" />
+          </div>
+          <div>
+            <h3 className="text-lg font-bold">Speed up your applications!</h3>
+            <p className="text-slate-300 text-sm">Download our Chrome Extension to auto-fill jobs on LinkedIn & Indeed in 1-click.</p>
+          </div>
+        </div>
+        <button className="whitespace-nowrap w-full sm:w-auto px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold rounded-lg shadow-md transition-colors relative z-10">
+          Install Extension Free
         </button>
       </div>
 
