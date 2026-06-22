@@ -26,7 +26,7 @@ const ResumeAnalyzer = () => {
   const [rewriteText, setRewriteText] = useState('');
   const [rewrittenOptions, setRewrittenOptions] = useState([]);
   const [isRewriting, setIsRewriting] = useState(false);
-  s
+
   // Full Recreate States
   const [recreatedResume, setRecreatedResume] = useState(null);
   const [isRecreating, setIsRecreating] = useState(false);
