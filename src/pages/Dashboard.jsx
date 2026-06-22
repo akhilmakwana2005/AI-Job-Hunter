@@ -116,7 +116,10 @@ const Dashboard = () => {
             <p className="text-slate-300 text-sm">Download our Chrome Extension to auto-fill jobs on LinkedIn & Indeed in 1-click.</p>
           </div>
         </div>
-        <button className="whitespace-nowrap w-full sm:w-auto px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold rounded-lg shadow-md transition-colors relative z-10">
+        <button 
+          onClick={() => alert("The AI Job Hunter Chrome Extension is currently in Beta.\n\nTo install:\n1. Download the 'chrome-extension' folder from our repository.\n2. Go to chrome://extensions in your browser.\n3. Enable 'Developer mode'.\n4. Click 'Load unpacked' and select the folder.")}
+          className="whitespace-nowrap w-full sm:w-auto px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold rounded-lg shadow-md transition-colors relative z-10"
+        >
           Install Extension Free
         </button>
       </div>
