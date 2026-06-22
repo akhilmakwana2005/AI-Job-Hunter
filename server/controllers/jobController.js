@@ -8,55 +8,66 @@ export const getJobs = async (req, res) => {
   try {
     const { search, location, workType, experienceLevel } = req.query;
 
-    const mockJobs = [
-      { job_id: "mock_1", job_title: "Senior Full Stack Developer", employer_name: "Tech Corp", job_is_remote: true, job_city: "", job_country: "", job_required_experience: { required_experience_in_months: 60 }, job_min_salary: 1500000, job_max_salary: 2500000, job_posted_at_datetime_utc: new Date().toISOString(), job_apply_link: "#" },
-      { job_id: "mock_2", job_title: "Frontend React Engineer", employer_name: "Innovate Solutions", job_is_remote: false, job_city: "Bangalore", job_country: "India", job_required_experience: { required_experience_in_months: 36 }, job_min_salary: 1000000, job_max_salary: 1800000, job_posted_at_datetime_utc: new Date(Date.now() - 86400000).toISOString(), job_apply_link: "#" },
-      { job_id: "mock_3", job_title: "Backend Node.js Developer", employer_name: "Serverless Inc", job_is_remote: true, job_city: "", job_country: "", job_required_experience: { required_experience_in_months: 48 }, job_min_salary: 1200000, job_max_salary: 2000000, job_posted_at_datetime_utc: new Date(Date.now() - 172800000).toISOString(), job_apply_link: "#" }
-    ];
-
     let apiJobs = [];
-    let queryTerm = search ? search.toLowerCase() : 'developer';
-    if (location) {
-      queryTerm += ` ${location.toLowerCase()}`;
-    }
     
-    // Use Remotive API (No API Key required, no strict rate limit)
+    if (!process.env.RAPIDAPI_KEY) {
+      return res.json({ 
+        requiresApiKey: true, 
+        message: 'RapidAPI Key is missing. Please add your JSearch RAPIDAPI_KEY to the server environment variables to fetch real jobs.' 
+      });
+    }
+
+    let queryTerm = search || 'Developer';
+    if (location) {
+      queryTerm += ` in ${location}`;
+    }
+
+    const options = {
+      method: 'GET',
+      url: 'https://jsearch.p.rapidapi.com/search',
+      params: {
+        query: queryTerm,
+        page: '1',
+        num_pages: '1'
+      },
+      headers: {
+        'X-RapidAPI-Key': process.env.RAPIDAPI_KEY,
+        'X-RapidAPI-Host': 'jsearch.p.rapidapi.com'
+      }
+    };
+
     try {
-      const response = await axios.get(`https://remotive.com/api/remote-jobs?search=${encodeURIComponent(queryTerm)}&limit=30`);
-      if (response.data && response.data.jobs && response.data.jobs.length > 0) {
-        apiJobs = response.data.jobs;
+      const response = await axios.request(options);
+      if (response.data && response.data.data && response.data.data.length > 0) {
+        apiJobs = response.data.data;
       }
     } catch (apiError) {
-      console.error('Remotive API Call Failed, falling back to mock jobs:', apiError.message);
+      console.error('RapidAPI Call Failed:', apiError.message);
+      if (apiError.response && apiError.response.status === 429) {
+        return res.json({ 
+          requiresApiKey: true, 
+          message: 'RapidAPI quota reached. Please upgrade your JSearch free tier plan or use a new key.' 
+        });
+      }
+      throw new Error('Failed to fetch from JSearch API');
     }
 
-    if (apiJobs.length === 0) {
-      apiJobs = mockJobs;
-    }
-
-    const workTypesArray = ['Remote', 'Hybrid', 'On-site'];
-
-    // Map Remotive (or Mock) response to our frontend structure
+    // Map JSearch response to our frontend structure
     const mappedJobs = apiJobs.map(job => {
-      // If it's a mock job, use its properties, otherwise use Remotive's properties
-      const isMock = !!job.job_id;
-      
       const matchScore = Math.floor(Math.random() * (99 - 70 + 1)) + 70; 
-      // Remotive API only returns remote jobs. To make our frontend filters look functional for the demo:
-      const randomWorkType = workTypesArray[Math.floor(Math.random() * workTypesArray.length)];
 
       return {
-        _id: isMock ? job.job_id : String(job.id),
-        title: isMock ? job.job_title : job.title,
-        company: isMock ? job.employer_name : job.company_name,
-        location: isMock ? (job.job_city ? `${job.job_city}, ${job.job_country}` : 'Remote') : (job.candidate_required_location || 'Remote'),
-        workType: isMock ? (job.job_is_remote ? 'Remote' : 'On-site') : randomWorkType,
-        experienceLevel: isMock ? (job.job_required_experience?.required_experience_in_months ? `${Math.floor(job.job_required_experience.required_experience_in_months / 12)} years` : 'Not specified') : 'Not specified',
-        salaryRange: isMock ? (job.job_min_salary ? `₹${job.job_min_salary} - ₹${job.job_max_salary}` : 'Not Disclosed') : (job.salary || 'Competitive'),
+        _id: job.job_id,
+        title: job.job_title,
+        company: job.employer_name,
+        location: job.job_city ? `${job.job_city}, ${job.job_country}` : (job.job_is_remote ? 'Remote' : 'Not specified'),
+        workType: job.job_is_remote ? 'Remote' : 'On-site',
+        experienceLevel: job.job_required_experience?.required_experience_in_months ? `${Math.floor(job.job_required_experience.required_experience_in_months / 12)} years` : 'Not specified',
+        salaryRange: job.job_min_salary ? `₹${job.job_min_salary} - ₹${job.job_max_salary}` : 'Not Disclosed',
         requiredSkills: ['Teamwork', 'Communication'], 
-        postedAt: isMock ? job.job_posted_at_datetime_utc : job.publication_date,
+        postedAt: job.job_posted_at_datetime_utc || new Date(),
         matchScore: matchScore,
-        applyLink: isMock ? job.job_apply_link : job.url
+        applyLink: job.job_apply_link
       };
     });
 
