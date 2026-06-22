@@ -91,14 +91,14 @@ const ApplicationsTracker = () => {
 
   return (
     <div className="h-full flex flex-col">
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
         <div>
           <h1 className="text-2xl font-bold text-slate-900">Applications Board</h1>
           <p className="text-slate-500 text-sm">Drag and drop to update application status.</p>
         </div>
         <button 
           onClick={() => setShowAddModal(true)}
-          className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 transition-colors"
+          className="inline-flex shrink-0 items-center justify-center px-4 py-2.5 sm:py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 transition-colors w-full sm:w-auto"
         >
           <Plus size={16} className="mr-2" /> Add Application
         </button>
