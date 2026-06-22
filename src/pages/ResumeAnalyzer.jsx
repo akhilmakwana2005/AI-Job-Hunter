@@ -190,14 +190,20 @@ const ResumeAnalyzer = () => {
     if (!printRef.current) return;
 
     const content = printRef.current.innerHTML;
-    const printWindow = window.open('', '', 'height=800,width=800');
+    const printWindow = window.open('', '_blank');
 
     printWindow.document.write('<html><head><title>Resume - ' + (recreatedResume?.fullName || 'ATS') + '</title>');
-    printWindow.document.write('<script src="https://cdn.tailwindcss.com"></script>');
+    
+    // Copy all styles from the current document to avoid CDN loading issues on mobile
+    const styles = document.querySelectorAll('style, link[rel="stylesheet"]');
+    styles.forEach(style => {
+      printWindow.document.write(style.outerHTML);
+    });
+
     // Setting @page margin to 0 completely removes browser headers and footers (date, URL)
-    printWindow.document.write('<style>@page { size: a4 portrait; margin: 0; } body { padding: 15mm; margin: 0; background-color: white; color: #0f172a; }</style>');
+    printWindow.document.write('<style>@page { size: a4 portrait; margin: 0; } body { padding: 15mm; margin: 0; background-color: white !important; color: #0f172a !important; }</style>');
     printWindow.document.write('</head><body>');
-    printWindow.document.write('<div class="max-w-4xl mx-auto font-sans">');
+    printWindow.document.write('<div class="max-w-4xl mx-auto font-sans bg-white">');
     printWindow.document.write(content);
     printWindow.document.write('</div></body></html>');
     printWindow.document.close();
@@ -205,10 +211,8 @@ const ResumeAnalyzer = () => {
     setTimeout(() => {
       printWindow.focus();
       printWindow.print();
-      // Optional: printWindow.close(); 
-      // User can close it themselves or it stays open if they cancel. Best to close after print dialog finishes, but browsers block JS execution during print dialog anyway.
       printWindow.onafterprint = () => printWindow.close();
-    }, 1000);
+    }, 800);
   };
 
   return (
