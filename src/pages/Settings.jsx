@@ -100,7 +100,7 @@ const Settings = () => {
           <p className="text-sm text-slate-500 dark:text-slate-400 mt-1 transition-colors">Manage your account and preferences.</p>
         </div>
 
-        <nav className="space-y-2">
+        <nav className="flex flex-row lg:flex-col gap-3 overflow-x-auto pb-2 scrollbar-hide snap-x">
           {tabs.map((tab) => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
@@ -108,10 +108,10 @@ const Settings = () => {
               <button 
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`w-full flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all duration-300 text-left ${
+                className={`snap-start flex-shrink-0 w-64 lg:w-full flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all duration-300 text-left ${
                   isActive 
-                    ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-md shadow-blue-200 dark:shadow-none translate-x-1' 
-                    : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-blue-600 dark:hover:text-blue-400 hover:translate-x-1'
+                    ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-md shadow-blue-200 dark:shadow-none lg:translate-x-1' 
+                    : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-blue-600 dark:hover:text-blue-400 lg:hover:translate-x-1'
                 }`}
               >
                 <div className={`p-2 rounded-lg transition-colors ${isActive ? 'bg-white/20' : 'bg-slate-100 dark:bg-slate-800'}`}>
@@ -119,7 +119,7 @@ const Settings = () => {
                 </div>
                 <div>
                   <p className={`text-sm font-bold transition-colors ${isActive ? 'text-white' : 'text-slate-900 dark:text-slate-200'}`}>{tab.label}</p>
-                  <p className={`text-xs transition-colors ${isActive ? 'text-blue-100' : 'text-slate-500 dark:text-slate-400'}`}>{tab.desc}</p>
+                  <p className={`text-xs transition-colors ${isActive ? 'text-blue-100' : 'text-slate-500 dark:text-slate-400'} hidden sm:block lg:block`}>{tab.desc}</p>
                 </div>
               </button>
             )
