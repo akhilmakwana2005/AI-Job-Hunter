@@ -44,44 +44,32 @@ export const getAutoMatches = async (req, res) => {
       { _id: 'auto_10', title: `Core ${targetRole}`, company: 'Meta', location: 'Gurgaon', salary: '₹35L - ₹55L', matchScore: 91, matchReasons: ['Requires deep understanding of React/GraphQL', 'Social media scaling challenges'], applyUrl: 'https://metacareers.com' }
     ];
 
-    let finalMatches = mockMatches;
+    let finalMatches = [];
+    const queryTerm = `${targetRole} ${skills.slice(0, 1).join(' ')}`;
 
-    if (process.env.RAPIDAPI_KEY) {
-      try {
-        const queryTerm = `${targetRole} ${skills.slice(0, 2).join(' ')}`;
-        const options = {
-          method: 'GET',
-          url: 'https://jsearch.p.rapidapi.com/search',
-          params: {
-            query: queryTerm,
-            page: '1',
-            num_pages: '1'
-          },
-          headers: {
-            'X-RapidAPI-Key': process.env.RAPIDAPI_KEY,
-            'X-RapidAPI-Host': 'jsearch.p.rapidapi.com'
-          }
-        };
-
-        const response = await axios.request(options);
-        if (response.data && response.data.data && response.data.data.length > 0) {
-          finalMatches = response.data.data.map(job => ({
-            _id: job.job_id,
-            title: job.job_title,
-            company: job.employer_name,
-            location: job.job_city ? `${job.job_city}, ${job.job_country}` : (job.job_is_remote ? 'Remote' : 'Not specified'),
-            salary: job.job_min_salary ? `₹${job.job_min_salary} - ₹${job.job_max_salary}` : 'Competitive',
-            matchScore: Math.floor(Math.random() * (99 - 85 + 1)) + 85,
-            matchReasons: [
-              `Matches your target role: ${targetRole}`, 
-              `Company is hiring actively`
-            ],
-            applyUrl: job.job_apply_link || job.job_google_link || '#'
-          }));
-        }
-      } catch (error) {
-        console.error('Failed to fetch real jobs for AutoMatch, using mocks:', error.message);
+    try {
+      const response = await axios.get(`https://remotive.com/api/remote-jobs?search=${encodeURIComponent(queryTerm)}&limit=10`);
+      if (response.data && response.data.jobs && response.data.jobs.length > 0) {
+        finalMatches = response.data.jobs.map(job => ({
+          _id: String(job.id),
+          title: job.title,
+          company: job.company_name,
+          location: job.candidate_required_location || 'Remote',
+          salary: job.salary || 'Competitive',
+          matchScore: Math.floor(Math.random() * (99 - 85 + 1)) + 85,
+          matchReasons: [
+            `Matches your target role: ${targetRole}`, 
+            `Company is hiring actively in ${job.category}`
+          ],
+          applyUrl: job.url || '#'
+        }));
       }
+    } catch (error) {
+      console.error('Failed to fetch real jobs for AutoMatch, using mocks:', error.message);
+    }
+
+    if (finalMatches.length === 0) {
+      finalMatches = mockMatches;
     }
 
     // Simulate network processing delay for realism
