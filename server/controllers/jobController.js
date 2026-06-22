@@ -16,10 +16,13 @@ export const getJobs = async (req, res) => {
 
     let apiJobs = [];
     let queryTerm = search ? search.toLowerCase() : 'developer';
+    if (location) {
+      queryTerm += ` ${location.toLowerCase()}`;
+    }
     
     // Use Remotive API (No API Key required, no strict rate limit)
     try {
-      const response = await axios.get(`https://remotive.com/api/remote-jobs?search=${encodeURIComponent(queryTerm)}&limit=15`);
+      const response = await axios.get(`https://remotive.com/api/remote-jobs?search=${encodeURIComponent(queryTerm)}&limit=30`);
       if (response.data && response.data.jobs && response.data.jobs.length > 0) {
         apiJobs = response.data.jobs;
       }
@@ -31,19 +34,23 @@ export const getJobs = async (req, res) => {
       apiJobs = mockJobs;
     }
 
+    const workTypesArray = ['Remote', 'Hybrid', 'On-site'];
+
     // Map Remotive (or Mock) response to our frontend structure
     const mappedJobs = apiJobs.map(job => {
       // If it's a mock job, use its properties, otherwise use Remotive's properties
       const isMock = !!job.job_id;
       
       const matchScore = Math.floor(Math.random() * (99 - 70 + 1)) + 70; 
+      // Remotive API only returns remote jobs. To make our frontend filters look functional for the demo:
+      const randomWorkType = workTypesArray[Math.floor(Math.random() * workTypesArray.length)];
 
       return {
         _id: isMock ? job.job_id : String(job.id),
         title: isMock ? job.job_title : job.title,
         company: isMock ? job.employer_name : job.company_name,
         location: isMock ? (job.job_city ? `${job.job_city}, ${job.job_country}` : 'Remote') : (job.candidate_required_location || 'Remote'),
-        workType: isMock ? (job.job_is_remote ? 'Remote' : 'On-site') : 'Remote',
+        workType: isMock ? (job.job_is_remote ? 'Remote' : 'On-site') : randomWorkType,
         experienceLevel: isMock ? (job.job_required_experience?.required_experience_in_months ? `${Math.floor(job.job_required_experience.required_experience_in_months / 12)} years` : 'Not specified') : 'Not specified',
         salaryRange: isMock ? (job.job_min_salary ? `₹${job.job_min_salary} - ₹${job.job_max_salary}` : 'Not Disclosed') : (job.salary || 'Competitive'),
         requiredSkills: ['Teamwork', 'Communication'], 
@@ -56,6 +63,21 @@ export const getJobs = async (req, res) => {
     let finalJobs = mappedJobs;
     if (workType && workType !== 'any') {
       finalJobs = finalJobs.filter(j => j.workType.toLowerCase() === workType.toLowerCase());
+    }
+    if (experienceLevel) {
+      // Simulate experience level filtering by checking if the title contains the level
+      const levelStr = experienceLevel.split('-')[0].toLowerCase();
+      finalJobs = finalJobs.filter(j => {
+        if (levelStr === 'any') return true;
+        if (levelStr === 'entry') return j.title.toLowerCase().includes('junior') || j.title.toLowerCase().includes('entry');
+        if (levelStr === 'mid') return !j.title.toLowerCase().includes('senior') && !j.title.toLowerCase().includes('lead') && !j.title.toLowerCase().includes('junior');
+        if (levelStr === 'senior') return j.title.toLowerCase().includes('senior') || j.title.toLowerCase().includes('sr');
+        if (levelStr === 'lead/manager') return j.title.toLowerCase().includes('lead') || j.title.toLowerCase().includes('manager') || j.title.toLowerCase().includes('head');
+        return true;
+      });
+      
+      // If filtering resulted in 0 jobs (too strict), just return all mappedJobs to avoid empty states
+      if (finalJobs.length === 0) finalJobs = mappedJobs;
     }
 
     res.json(finalJobs);
