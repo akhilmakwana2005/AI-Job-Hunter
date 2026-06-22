@@ -146,7 +146,7 @@ const Settings = () => {
                     <p className="text-sm text-slate-500 dark:text-slate-400 transition-colors">Update your photo and personal details here.</p>
                   </div>
                   
-                  <div className="flex flex-col sm:flex-row items-center text-center sm:text-left gap-6 p-6 bg-slate-50/50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-700/50 transition-colors">
+                  <div className="flex flex-row items-center gap-4 sm:gap-6 p-4 sm:p-6 bg-slate-50/50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-700/50 transition-colors">
                     <input 
                       type="file" 
                       ref={fileInputRef} 
@@ -155,7 +155,7 @@ const Settings = () => {
                       className="hidden" 
                     />
                     <div className="relative flex-shrink-0 group cursor-pointer" onClick={() => fileInputRef.current?.click()}>
-                      <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white text-3xl font-bold shadow-lg shadow-blue-200 dark:shadow-none overflow-hidden">
+                      <div className="w-16 h-16 sm:w-24 sm:h-24 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white text-xl sm:text-3xl font-bold shadow-lg shadow-blue-200 dark:shadow-none overflow-hidden">
                         {profileImage ? (
                           <img src={profileImage} alt="Profile" className="w-full h-full object-cover" />
                         ) : (
@@ -163,17 +163,18 @@ const Settings = () => {
                         )}
                       </div>
                       <div className="absolute inset-0 bg-black/40 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                        <Camera className="text-white" size={24} />
+                        <Camera className="text-white" size={20} />
                       </div>
                     </div>
-                    <div className="flex-1 w-full flex flex-col items-center sm:items-start">
-                      <h3 className="font-bold text-slate-900 dark:text-white text-lg mb-1 transition-colors">{formData.fullName || 'User'}</h3>
-                      <p className="text-sm text-slate-500 dark:text-slate-400 mb-5 transition-colors break-all">{formData.email}</p>
-                      <div className="flex flex-col sm:flex-row w-full sm:w-auto gap-3">
-                        <button type="button" onClick={() => fileInputRef.current?.click()} className="w-full sm:w-auto px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm font-bold text-slate-700 dark:text-slate-300 hover:border-blue-300 dark:hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 transition-colors shadow-sm">
-                          Change Photo
+                    <div className="flex-1 min-w-0 flex flex-col items-start">
+                      <h3 className="font-bold text-slate-900 dark:text-white text-base sm:text-lg mb-0.5 sm:mb-1 transition-colors truncate w-full">{formData.fullName || 'User'}</h3>
+                      <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mb-3 sm:mb-4 transition-colors truncate w-full">{formData.email}</p>
+                      <div className="flex flex-row gap-2 sm:gap-3">
+                        <button type="button" onClick={() => fileInputRef.current?.click()} className="px-3 py-1.5 sm:px-4 sm:py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs sm:text-sm font-bold text-slate-700 dark:text-slate-300 hover:border-blue-300 dark:hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 transition-colors shadow-sm">
+                          <span className="hidden sm:inline">Change Photo</span>
+                          <span className="sm:hidden">Change</span>
                         </button>
-                        <button type="button" onClick={handleRemoveImage} className="w-full sm:w-auto px-4 py-2 bg-red-600 dark:bg-red-700 text-white rounded-lg text-sm font-bold hover:bg-red-700 dark:hover:bg-red-800 transition-colors shadow-sm">
+                        <button type="button" onClick={handleRemoveImage} className="px-3 py-1.5 sm:px-4 sm:py-2 bg-red-600 dark:bg-red-700 text-white rounded-lg text-xs sm:text-sm font-bold hover:bg-red-700 dark:hover:bg-red-800 transition-colors shadow-sm">
                           Remove
                         </button>
                       </div>
