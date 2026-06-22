@@ -90,20 +90,20 @@ const Login = () => {
       </div>
 
       {/* Right Side - Form */}
-      <div className="flex-1 flex items-center justify-center p-6 sm:p-12 lg:p-16 bg-slate-50 lg:bg-white relative">
-        <div className="w-full max-w-md space-y-8 relative z-10">
+      <div className="flex-1 flex items-center justify-center p-4 sm:p-12 lg:p-16 bg-slate-50 lg:bg-white relative">
+        <div className="w-full max-w-md bg-white lg:bg-transparent p-6 sm:p-10 lg:p-0 rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] lg:shadow-none border border-slate-100 lg:border-transparent space-y-8 relative z-10">
           
           {/* Mobile Logo */}
-          <div className="lg:hidden flex items-center gap-3 justify-center mb-10">
-            <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-700 text-white rounded-xl flex items-center justify-center font-extrabold text-sm shadow-md">AI</div>
-            <span className="font-extrabold text-xl tracking-tight text-slate-900">Job Hunter</span>
+          <div className="lg:hidden flex items-center gap-3 justify-center mb-2">
+            <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-700 text-white rounded-xl flex items-center justify-center font-extrabold text-sm shadow-lg shadow-blue-500/30">AI</div>
+            <span className="font-extrabold text-2xl tracking-tight text-slate-900">Job Hunter</span>
           </div>
 
-          <div>
-            <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">
+          <div className="text-center lg:text-left">
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
               Sign in to your account
             </h2>
-            <p className="mt-3 text-sm text-slate-500 font-medium">
+            <p className="mt-2 text-sm text-slate-500 font-medium">
               Or{' '}
               <Link to="/register" className="font-bold text-blue-600 hover:text-blue-700 transition-colors">
                 create a new account
