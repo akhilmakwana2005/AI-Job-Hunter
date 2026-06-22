@@ -28,7 +28,7 @@ const Sidebar = () => {
   const handleLogout = () => {
     localStorage.removeItem('token');
     dispatch(logout());
-    navigate('/login');
+    navigate('/');
   };
   const navItems = [
     { name: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
