@@ -131,13 +131,15 @@ const Sidebar = () => {
           <span className="text-sm">Settings</span>
         </NavLink>
 
-        <NavLink
-          to="/dashboard/admin"
-          className={({ isActive }) => `flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${isActive ? 'bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 font-bold shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-slate-900 dark:hover:text-white font-medium'}`}
-        >
-          <LayoutDashboard size={20} className="text-slate-400 dark:text-slate-500" />
-          <span className="text-sm">Admin Panel</span>
-        </NavLink>
+        {user?.isAdmin && (
+          <NavLink
+            to="/dashboard/admin"
+            className={({ isActive }) => `flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${isActive ? 'bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 font-bold shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-slate-900 dark:hover:text-white font-medium'}`}
+          >
+            <LayoutDashboard size={20} className="text-slate-400 dark:text-slate-500" />
+            <span className="text-sm">Admin Panel</span>
+          </NavLink>
+        )}
 
         {/* Logout Button */}
         <button

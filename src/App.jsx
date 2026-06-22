@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AutopilotProvider } from './context/AutopilotContext';
@@ -81,7 +81,7 @@ function App() {
             <Route path="networking" element={<Networking />} />
             <Route path="settings" element={<Settings />} />
             <Route path="upgrade" element={<Upgrade />} />
-            <Route path="admin" element={<AdminDashboard />} />
+            <Route path="admin" element={user?.isAdmin ? <AdminDashboard /> : <Navigate to="/dashboard" replace />} />
             <Route path="portfolio" element={<PortfolioBuilder />} />
             <Route path="auto-match" element={<AutoMatch />} />
             {/* We will add more routes here for Job Search, Resume Analyzer, etc. */}
