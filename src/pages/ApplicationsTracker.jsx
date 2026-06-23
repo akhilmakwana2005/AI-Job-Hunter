@@ -99,13 +99,12 @@ const ApplicationsTracker = () => {
   };
 
   const handleDelete = async (appId) => {
-    if (window.confirm('Are you sure you want to delete this application?')) {
-      try {
-        await applicationService.deleteApplication(appId);
-        setApplications(applications.filter(app => app._id !== appId));
-      } catch (error) {
-        console.error('Failed to delete application', error);
-      }
+    try {
+      await applicationService.deleteApplication(appId);
+      setApplications(applications.filter(app => app._id !== appId));
+    } catch (error) {
+      console.error('Failed to delete application', error);
+      alert('Failed to delete application. Please try again.');
     }
   };
 
@@ -234,9 +233,7 @@ const ApplicationsTracker = () => {
                             {COLUMNS.map(c => <option key={c} value={c}>{c}</option>)}
                           </select>
                           <button 
-                            onPointerDown={(e) => e.stopPropagation()}
-                            onMouseDown={(e) => e.stopPropagation()}
-                            onClick={(e) => {
+                            onPointerDown={(e) => {
                               e.preventDefault();
                               e.stopPropagation();
                               handleDelete(app._id);
