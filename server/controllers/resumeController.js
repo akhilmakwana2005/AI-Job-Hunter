@@ -274,6 +274,12 @@ export const recreateResume = async (req, res) => {
     Here is the original resume text:
     "${text.substring(0, 4000)}"
     
+    CRITICAL INSTRUCTIONS:
+    1. Do NOT hallucinate or invent fake companies, job titles, degrees, or dates.
+    2. You MUST retain the exact factual data (companies, dates, schools, roles) from the original text.
+    3. Your job is strictly to optimize the wording of the summary and bullet points to be more impactful, action-oriented, and ATS-friendly.
+    4. You MUST include EVERY SINGLE job and education entry found in the original text in your JSON output arrays. Do not omit any history.
+    
     Output the completely rewritten, ATS-optimized resume strictly as a JSON object with this exact structure (NO MARKDOWN OR BACKTICKS):
     {
       "fullName": "Extract from text or use '[Full Name]'",
@@ -286,21 +292,20 @@ export const recreateResume = async (req, res) => {
       "skills": ["Skill 1", "Skill 2", "Skill 3"],
       "experience": [
         {
-          "role": "Job Title",
-          "company": "Company Name",
-          "duration": "Duration (e.g. 2020 - Present)",
-          "achievements": ["Action-verb starting bullet point with metrics", "Another bullet"]
+          "role": "Exact Job Title from original",
+          "company": "Exact Company Name from original",
+          "duration": "Exact Duration from original",
+          "achievements": ["Action-verb starting bullet point with metrics", "Another optimized bullet"]
         }
       ],
       "education": [
         {
-          "degree": "Degree",
-          "institution": "University Name",
-          "year": "Graduation Year"
+          "degree": "Exact Degree from original",
+          "institution": "Exact University Name from original",
+          "year": "Exact Graduation Year from original"
         }
       ]
-    }
-    Make sure ALL original experience is carried over but heavily optimized. If data is missing, use placeholders like '[City, State]'.`;
+    }`;
 
     const aiResponse = await generateAIResponse(prompt);
     
