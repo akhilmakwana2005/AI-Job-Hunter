@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { 
-  DollarSign, 
+  IndianRupee, 
   Copy, 
   Check, 
   Sparkles, 
@@ -141,12 +141,12 @@ const SalaryNegotiation = () => {
                 <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wide mb-1">Offered</label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <DollarSign className="h-4 w-4 text-slate-400" />
+                    <IndianRupee className="h-4 w-4 text-slate-400" />
                   </div>
                   <input
                     required
                     type="text"
-                    placeholder="$100k"
+                    placeholder="₹10,00,000"
                     className="pl-9 w-full rounded-lg border border-slate-300 dark:border-slate-600 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-slate-900 text-slate-900 dark:text-white"
                     value={formData.offeredSalary}
                     onChange={(e) => setFormData({ ...formData, offeredSalary: e.target.value })}
@@ -162,7 +162,7 @@ const SalaryNegotiation = () => {
                   <input
                     required
                     type="text"
-                    placeholder="$115k"
+                    placeholder="₹12,00,000"
                     className="pl-9 w-full rounded-lg border border-slate-300 dark:border-slate-600 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-slate-900 text-slate-900 dark:text-white"
                     value={formData.targetSalary}
                     onChange={(e) => setFormData({ ...formData, targetSalary: e.target.value })}
@@ -217,7 +217,7 @@ const SalaryNegotiation = () => {
                 </>
               ) : (
                 <>
-                  <DollarSign size={16} />
+                  <IndianRupee size={16} />
                   Generate Counter Offer
                 </>
               )}
@@ -297,7 +297,7 @@ const SalaryNegotiation = () => {
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-50/50 via-white to-white dark:from-blue-900/10 dark:via-slate-800 dark:to-slate-800 z-0"></div>
             
             <div className="relative z-10 w-24 h-24 bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/40 dark:to-blue-800/20 rounded-full flex items-center justify-center mb-6 shadow-inner border border-blue-100 dark:border-blue-800">
-              <DollarSign size={40} className="text-blue-600 dark:text-blue-400" />
+              <IndianRupee size={40} className="text-blue-600 dark:text-blue-400" />
             </div>
             <h2 className="relative z-10 text-2xl font-bold text-slate-900 dark:text-white mb-3">Salary Negotiation AI</h2>
             <p className="relative z-10 text-slate-500 dark:text-slate-400 max-w-md mx-auto leading-relaxed text-sm">
