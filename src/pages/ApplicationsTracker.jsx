@@ -234,6 +234,8 @@ const ApplicationsTracker = () => {
                             {COLUMNS.map(c => <option key={c} value={c}>{c}</option>)}
                           </select>
                           <button 
+                            onPointerDown={(e) => e.stopPropagation()}
+                            onMouseDown={(e) => e.stopPropagation()}
                             onClick={(e) => {
                               e.preventDefault();
                               e.stopPropagation();
