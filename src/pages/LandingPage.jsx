@@ -35,12 +35,10 @@ const LandingPage = () => {
       {/* Navbar */}
       <nav className="fixed w-full top-0 z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl border-b border-slate-200/60 dark:border-slate-800/60 transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-20">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-700 text-white rounded-xl flex items-center justify-center font-extrabold text-sm shadow-lg shadow-blue-500/30">
-              AI
-            </div>
-            <span className="font-extrabold text-xl tracking-tight text-slate-900 dark:text-white">Job Hunter</span>
-          </div>
+          <div className="flex items-center">
+          <img src="/logo.png" alt="AI Job Hunter" className="w-8 h-8 mr-2 object-contain" />
+          <span className="font-extrabold text-xl tracking-tight text-slate-900 dark:text-white">Job Hunter</span>
+        </div>
           <div className="hidden md:flex gap-10">
             <a href="#features" className="text-sm font-bold text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-white transition-colors">Features</a>
             <a href="#pricing" className="text-sm font-bold text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-white transition-colors">Pricing</a>
@@ -241,9 +239,9 @@ const LandingPage = () => {
       {/* Footer */}
       <footer className="bg-slate-50 dark:bg-slate-950 py-16 px-4 border-t border-slate-200 dark:border-slate-800/60 relative z-30 transition-colors">
         <div className="max-w-7xl mx-auto flex flex-wrap justify-between gap-12">
-          <div>
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-700 text-white rounded-lg flex items-center justify-center font-bold text-xs shadow-sm">AI</div>
+          <div className="col-span-1 md:col-span-1">
+            <div className="flex items-center mb-4">
+              <img src="/logo.png" alt="AI Job Hunter" className="w-6 h-6 mr-2 object-contain" />
               <span className="font-extrabold text-lg text-slate-900 dark:text-white tracking-tight">Job Hunter</span>
             </div>
             <p className="text-slate-500 text-sm font-medium">Design-first AI tools for the modern job seeker.</p>
