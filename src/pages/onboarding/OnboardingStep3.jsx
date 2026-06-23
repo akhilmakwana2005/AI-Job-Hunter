@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { ArrowRight, ArrowLeft, Briefcase, MapPin, DollarSign } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Briefcase, MapPin, IndianRupee } from 'lucide-react';
 import { updateUser } from '../../store/authSlice';
 import { userService } from '../../services/api';
 
@@ -110,10 +110,10 @@ const OnboardingStep3 = () => {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Minimum Salary (USD)</label>
+              <label className="block text-sm font-medium text-slate-700 mb-1">Minimum Salary (INR)</label>
               <div className="relative rounded-md shadow-sm">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <DollarSign className="h-5 w-5 text-slate-400" />
+                  <IndianRupee className="h-5 w-5 text-slate-400" />
                 </div>
                 <input
                   type="number"
@@ -121,7 +121,7 @@ const OnboardingStep3 = () => {
                   value={formData.minSalary}
                   onChange={handleChange}
                   className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 sm:text-sm border-slate-300 rounded-md py-2 border"
-                  placeholder="100000"
+                  placeholder="1000000"
                 />
               </div>
             </div>

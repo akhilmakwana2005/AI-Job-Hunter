@@ -15,7 +15,7 @@ import {
   ChevronRight,
   LogOut,
   Users,
-  DollarSign,
+  IndianRupee,
   Globe,
   Zap
 } from 'lucide-react';
@@ -38,7 +38,7 @@ const Sidebar = () => {
     { name: 'Portfolio Builder', path: '/dashboard/portfolio', icon: Globe },
     { name: 'Resume Analyzer', path: '/dashboard/resume', icon: FileText },
     { name: 'Cover Letters', path: '/dashboard/cover-letters', icon: PenTool },
-    { name: 'Salary Negotiation', path: '/dashboard/salary-negotiation', icon: DollarSign },
+    { name: 'Salary Negotiation', path: '/dashboard/salary-negotiation', icon: IndianRupee },
     { name: 'Mock Interview', path: '/dashboard/mock-interview', icon: MessageSquare },
     { name: 'Skill Gap', path: '/dashboard/skills', icon: TrendingUp },
     { name: 'Applications', path: '/dashboard/applications', icon: Briefcase },
