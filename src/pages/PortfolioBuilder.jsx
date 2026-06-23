@@ -10,8 +10,10 @@ import {
 } from 'lucide-react';
 import { resumeService, portfolioService } from '../services/api';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 const PortfolioBuilder = () => {
+  const navigate = useNavigate();
   const [resumes, setResumes] = useState([]);
   const [selectedResume, setSelectedResume] = useState('');
   const [selectedTheme, setSelectedTheme] = useState('Modern Dark');
@@ -41,8 +43,7 @@ const PortfolioBuilder = () => {
     }
 
     if (!user?.isPro) {
-      alert("AI Portfolio Builder is a Pro feature! Please upgrade to continue.");
-      // In a real app, you might trigger an upgrade modal here
+      navigate('/dashboard/upgrade');
       return;
     }
 
@@ -152,26 +153,32 @@ const PortfolioBuilder = () => {
               </div>
             </div>
 
-            <button
-              onClick={handleGenerate}
-              disabled={isGenerating || resumes.length === 0 || !user?.isPro}
-              className="w-full flex justify-center items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white rounded-xl py-3.5 text-sm font-bold transition-all shadow-md shadow-blue-500/20 disabled:opacity-50 disabled:cursor-not-allowed hover:-translate-y-0.5"
-            >
-              {isGenerating ? (
-                <>
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                  Designing Website...
-                </>
-              ) : (
-                <>
-                  <Sparkles size={18} />
-                  Generate Portfolio
-                </>
-              )}
-            </button>
-            
-            {!user?.isPro && (
-               <p className="text-xs text-center text-rose-500 font-medium">Unlock Pro to access the website builder.</p>
+            {user?.isPro ? (
+              <button
+                onClick={handleGenerate}
+                disabled={isGenerating || resumes.length === 0}
+                className="w-full flex justify-center items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white rounded-xl py-3.5 text-sm font-bold transition-all shadow-md shadow-blue-500/20 disabled:opacity-50 disabled:cursor-not-allowed hover:-translate-y-0.5"
+              >
+                {isGenerating ? (
+                  <>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                    Designing Website...
+                  </>
+                ) : (
+                  <>
+                    <Sparkles size={18} />
+                    Generate Portfolio
+                  </>
+                )}
+              </button>
+            ) : (
+              <button
+                onClick={() => navigate('/dashboard/upgrade')}
+                className="w-full flex justify-center items-center gap-2 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-white rounded-xl py-3.5 text-sm font-bold transition-all shadow-md shadow-amber-500/20 hover:-translate-y-0.5 animate-pulse"
+              >
+                <Crown size={18} />
+                Upgrade to Pro to Generate
+              </button>
             )}
           </div>
         </div>
