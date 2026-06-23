@@ -234,7 +234,11 @@ const ApplicationsTracker = () => {
                             {COLUMNS.map(c => <option key={c} value={c}>{c}</option>)}
                           </select>
                           <button 
-                            onClick={() => handleDelete(app._id)}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              handleDelete(app._id);
+                            }}
                             className="text-slate-400 hover:text-rose-600 transition-colors p-1"
                             title="Delete Application"
                           >
