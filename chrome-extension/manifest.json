@@ -38,7 +38,7 @@
       "js": ["content.js"]
     },
     {
-      "matches": ["http://localhost:5173/*", "http://127.0.0.1:5173/*", "*://ai-job-hunter-pi.vercel.app/*"],
+      "matches": ["http://localhost:5173/*", "http://127.0.0.1:5173/*", "*://*.vercel.app/*", "*://*.onrender.com/*"],
       "js": ["syncToken.js"]
     }
   ]

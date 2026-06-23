@@ -36,6 +36,10 @@ function App() {
   const { token, user } = useSelector(state => state.auth);
 
   useEffect(() => {
+    // Save API URL to localStorage so the Chrome Extension can dynamically connect to the correct backend (Local vs Prod)
+    const currentApiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/v1';
+    localStorage.setItem('apiUrl', currentApiUrl);
+
     const fetchUser = async () => {
       if (token && !user) {
         try {

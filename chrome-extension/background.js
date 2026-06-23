@@ -1,14 +1,21 @@
 // Background service worker for handling API calls to our Node.js Backend
 
-// Change this to your production API URL before publishing (e.g., https://your-backend.onrender.com/api/v1)
-const API_BASE_URL = 'http://localhost:5000/api/v1';
+let API_BASE_URL = 'http://localhost:5000/api/v1';
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  
   if (request.action === "SYNC_TOKEN") {
-    chrome.storage.local.set({ authToken: request.token });
+    chrome.storage.local.set({ 
+      authToken: request.token,
+      apiUrl: request.apiUrl
+    });
+    if (request.apiUrl) API_BASE_URL = request.apiUrl;
     return false;
   }
+
+  // Ensure API_BASE_URL is loaded from storage if service worker restarted
+  chrome.storage.local.get(['apiUrl'], (res) => {
+    if (res.apiUrl) API_BASE_URL = res.apiUrl;
+  });
 
   if (request.action === "SAVE_JOB") {
     chrome.storage.local.get(['authToken'], (result) => {
