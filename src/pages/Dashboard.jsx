@@ -12,7 +12,7 @@ import {
 } from 'lucide-react';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 import { useSelector } from 'react-redux';
-import { applicationService, interviewService, jobService } from '../services/api';
+import { applicationService, interviewService, jobService, resumeService } from '../services/api';
 
 const Dashboard = () => {
   const { user } = useSelector(state => state.auth);
@@ -21,6 +21,7 @@ const Dashboard = () => {
   const [applications, setApplications] = useState([]);
   const [interviews, setInterviews] = useState([]);
   const [recommendedJobs, setRecommendedJobs] = useState([]);
+  const [latestResume, setLatestResume] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -34,6 +35,11 @@ const Dashboard = () => {
 
         const jobs = await jobService.getJobs();
         setRecommendedJobs(jobs.slice(0, 3));
+
+        const resumes = await resumeService.getResumes();
+        if (resumes && resumes.length > 0) {
+          setLatestResume(resumes[0]);
+        }
       } catch (error) {
         console.error("Failed to fetch dashboard data", error);
       } finally {
@@ -67,6 +73,14 @@ const Dashboard = () => {
   };
 
   const chartData = processChartData();
+
+  const calculateProfileStrength = () => {
+    let score = 20; // Base score
+    if (applications.length > 0) score += 20;
+    if (interviews.length > 0) score += 20;
+    if (latestResume) score += 40;
+    return score;
+  };
 
   const handleEasyApply = async (job) => {
     try {
@@ -178,7 +192,7 @@ const Dashboard = () => {
             </div>
             <div>
               <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Profile Strength</p>
-              <h3 className="text-2xl font-bold text-slate-900 dark:text-white">92%</h3>
+              <h3 className="text-2xl font-bold text-slate-900 dark:text-white">{calculateProfileStrength()}%</h3>
             </div>
           </div>
           <span className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-emerald-50 text-emerald-700">
@@ -243,24 +257,27 @@ const Dashboard = () => {
                 />
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <span className="text-4xl font-extrabold text-slate-900 dark:text-white transition-colors">85</span>
+                <span className="text-4xl font-extrabold text-slate-900 dark:text-white transition-colors">{latestResume ? latestResume.latestAtsScore || 0 : 0}</span>
                 <span className="text-sm font-medium text-slate-500 dark:text-slate-400 transition-colors">/100</span>
               </div>
             </div>
             
-            <div className="w-full space-y-3 mb-6">
-              <div className="flex items-start gap-3">
-                <CheckCircle size={18} className="text-emerald-500 mt-0.5" />
-                <span className="text-sm text-slate-700 dark:text-slate-300 transition-colors">Keyword match: High</span>
-              </div>
-              <div className="flex items-start gap-3">
-                <CheckCircle size={18} className="text-emerald-500 mt-0.5" />
-                <span className="text-sm text-slate-700 dark:text-slate-300 transition-colors">Formatting is ATS readable</span>
-              </div>
-              <div className="flex items-start gap-3">
-                <AlertCircle size={18} className="text-amber-500 mt-0.5" />
-                <span className="text-sm text-slate-700 dark:text-slate-300 transition-colors">Missing "Cloud Architecture" skill</span>
-              </div>
+            <div className="w-full space-y-3 mb-6 min-h-[90px]">
+              {latestResume?.analysis?.strengths?.slice(0, 2).map((s, i) => (
+                <div key={i} className="flex items-start gap-3">
+                  <CheckCircle size={18} className="text-emerald-500 mt-0.5 flex-shrink-0" />
+                  <span className="text-sm text-slate-700 dark:text-slate-300 transition-colors">{s}</span>
+                </div>
+              ))}
+              {latestResume?.analysis?.weaknesses?.slice(0, 1).map((w, i) => (
+                <div key={i} className="flex items-start gap-3">
+                  <AlertCircle size={18} className="text-amber-500 mt-0.5 flex-shrink-0" />
+                  <span className="text-sm text-slate-700 dark:text-slate-300 transition-colors">{w}</span>
+                </div>
+              ))}
+              {!latestResume && (
+                <div className="text-center text-sm text-slate-500 mt-4">Upload a resume to see analysis</div>
+              )}
             </div>
             
             <button className="w-full inline-flex justify-center items-center px-4 py-2 border border-slate-300 dark:border-slate-600 shadow-sm text-sm font-medium rounded-md text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-700 hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors">
