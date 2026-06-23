@@ -60,8 +60,8 @@ const Register = () => {
         <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_top_left,rgba(37,99,235,0.2)_0%,rgba(15,23,42,1)_100%)] pointer-events-none"></div>
         <div className="absolute bottom-0 right-0 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
-        <div className="flex items-center gap-3">
-          <img src="/logo.png" alt="AI Job Hunter Logo" className="w-8 h-8 object-contain" />
+        <div className="relative z-10 flex items-center gap-3">
+          <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-700 rounded-xl flex items-center justify-center font-extrabold text-sm shadow-lg shadow-blue-500/30">AI</div>
           <span className="font-extrabold text-xl tracking-tight">Job Hunter</span>
         </div>
 
@@ -94,15 +94,13 @@ const Register = () => {
       <div className="flex-1 flex items-center justify-center p-4 sm:p-12 lg:p-16 bg-slate-50 lg:bg-white relative">
         <div className="w-full max-w-md bg-white lg:bg-transparent p-6 sm:p-10 lg:p-0 rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] lg:shadow-none border border-slate-100 lg:border-transparent space-y-8 relative z-10">
           
+          {/* Mobile Logo */}
           <div className="lg:hidden flex items-center gap-3 justify-center mb-2">
-            <img src="/logo.png" alt="AI Job Hunter Logo" className="w-10 h-10 object-contain" />
+            <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-700 text-white rounded-xl flex items-center justify-center font-extrabold text-sm shadow-lg shadow-blue-500/30">AI</div>
             <span className="font-extrabold text-2xl tracking-tight text-slate-900">Job Hunter</span>
           </div>
 
           <div className="text-center lg:text-left">
-            <div className="hidden lg:inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-white shadow-xl shadow-blue-500/10 mb-6 border border-slate-100">
-              <img src="/logo.png" alt="AI Job Hunter Logo" className="w-10 h-10 object-contain drop-shadow-sm" />
-            </div>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
               Create your account
             </h2>

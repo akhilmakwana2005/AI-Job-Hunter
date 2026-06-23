@@ -53,8 +53,10 @@ const Sidebar = () => {
       {/* Brand Logo Area */}
       <div className="h-20 flex items-center px-6 border-b border-slate-200/50 dark:border-slate-800/50 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-blue-50/50 to-transparent dark:from-blue-900/10 opacity-50"></div>
-        <div className="relative flex items-center w-full group cursor-pointer">
-          <img src="/logo.png" alt="AI Job Hunter Logo" className="w-10 h-10 mr-2 transform group-hover:scale-105 transition-transform duration-300 object-contain drop-shadow-md" />
+        <div className="relative flex items-center w-full">
+          <div className="w-9 h-9 bg-gradient-to-br from-blue-500 to-blue-700 text-white rounded-xl flex items-center justify-center font-extrabold text-sm mr-3 shadow-lg shadow-blue-500/30 transform hover:scale-105 transition-transform duration-300">
+            AI
+          </div>
           <span className="font-extrabold text-xl tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300">
             Job Hunter
           </span>
