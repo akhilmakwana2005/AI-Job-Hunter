@@ -53,12 +53,22 @@ export const generateNegotiationEmail = async (req, res) => {
           userId: req.user._id,
           companyName,
           jobTitle,
+          subject: parsed.subject,
           offeredSalary,
           targetSalary,
           emailContent: parsed.emailBody
         });
 
-        return res.json({ ...parsed, _id: negotiationRecord._id });
+        return res.json({ 
+          _id: negotiationRecord._id,
+          subject: parsed.subject,
+          emailContent: parsed.emailBody,
+          companyName,
+          jobTitle,
+          offeredSalary,
+          targetSalary,
+          createdAt: negotiationRecord.createdAt
+        });
       } catch (e) {
         console.error('Failed to parse Salary Negotiation JSON', e);
         return res.status(500).json({ message: 'AI returned invalid formatting. Please try again.' });

@@ -15,6 +15,9 @@ const salaryNegotiationSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    subject: {
+      type: String,
+    },
     offeredSalary: {
       type: String,
       required: true,

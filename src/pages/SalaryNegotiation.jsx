@@ -271,7 +271,7 @@ const SalaryNegotiation = () => {
             <div className="flex justify-between items-center px-6 py-4 border-b border-slate-100 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/80">
               <div className="overflow-hidden">
                 <p className="text-[11px] uppercase tracking-wider font-bold text-slate-400 mb-1">Subject</p>
-                <h3 className="font-bold text-slate-900 dark:text-white truncate max-w-lg">{generatedEmail.subject}</h3>
+                <h3 className="font-bold text-slate-900 dark:text-white truncate max-w-lg">{generatedEmail.subject || 'Salary Negotiation'}</h3>
               </div>
               <button 
                 onClick={copyToClipboard}

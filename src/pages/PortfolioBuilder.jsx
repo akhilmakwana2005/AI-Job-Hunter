@@ -69,7 +69,7 @@ const PortfolioBuilder = () => {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `${user?.fullName.replace(/\\s+/g, '_')}_Portfolio.html`;
+    a.download = `${(user?.fullName || user?.name || 'User').replace(/\s+/g, '_')}_Portfolio.html`;
     a.click();
     URL.revokeObjectURL(url);
   };
@@ -188,7 +188,7 @@ const PortfolioBuilder = () => {
               <div className="w-3 h-3 rounded-full bg-emerald-400"></div>
            </div>
            <div className="flex-1 max-w-sm mx-4 bg-white dark:bg-slate-800 rounded-md px-3 py-1.5 text-[10px] text-center text-slate-400 font-mono truncate border border-slate-200 dark:border-slate-700">
-              {generatedHtml ? `https://${user?.fullName.replace(/\\s+/g, '').toLowerCase()}.portfolio.ai` : 'about:blank'}
+              {generatedHtml ? `https://${(user?.fullName || user?.name || 'User').replace(/\s+/g, '').toLowerCase()}.portfolio.ai` : 'about:blank'}
            </div>
            <div className="flex gap-2">
               {generatedHtml && (
