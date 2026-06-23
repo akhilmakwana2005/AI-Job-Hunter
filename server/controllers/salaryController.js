@@ -44,38 +44,45 @@ export const generateNegotiationEmail = async (req, res) => {
 
     const aiResponse = await generateAIResponse(prompt);
 
+    let subject = "";
+    let emailContent = "";
+
     if (aiResponse) {
       try {
         const parsed = JSON.parse(aiResponse.trim().replace(/```json/g, '').replace(/```/g, ''));
-        
-        // Save to DB
-        const negotiationRecord = await SalaryNegotiation.create({
-          userId: req.user._id,
-          companyName,
-          jobTitle,
-          subject: parsed.subject,
-          offeredSalary,
-          targetSalary,
-          emailContent: parsed.emailBody
-        });
-
-        return res.json({ 
-          _id: negotiationRecord._id,
-          subject: parsed.subject,
-          emailContent: parsed.emailBody,
-          companyName,
-          jobTitle,
-          offeredSalary,
-          targetSalary,
-          createdAt: negotiationRecord.createdAt
-        });
+        subject = parsed.subject;
+        emailContent = parsed.emailBody;
       } catch (e) {
         console.error('Failed to parse Salary Negotiation JSON', e);
-        return res.status(500).json({ message: 'AI returned invalid formatting. Please try again.' });
       }
     }
 
-    return res.status(429).json({ message: 'AI Quota Exceeded (Too Many Requests). Please wait 1 minute and try again.' });
+    if (!subject || !emailContent) {
+      subject = `Salary Negotiation - ${jobTitle} Role`;
+      emailContent = `Dear Hiring Manager,\n\nThank you so much for offering me the ${jobTitle} position at ${companyName}. I am thrilled about the opportunity to join the team and contribute to your goals.\n\nBefore I sign, I would like to discuss the base salary. Based on my experience and the current market rate for this role, I was hoping for a salary closer to ${targetSalary}.\n\nI am very excited about this role and am open to discussing this further to find a number that works for both of us.\n\nBest regards,\n[Your Name]`;
+    }
+
+    // Save to DB
+    const negotiationRecord = await SalaryNegotiation.create({
+      userId: req.user._id,
+      companyName,
+      jobTitle,
+      subject,
+      offeredSalary,
+      targetSalary,
+      emailContent
+    });
+
+    return res.json({ 
+      _id: negotiationRecord._id,
+      subject,
+      emailContent,
+      companyName,
+      jobTitle,
+      offeredSalary,
+      targetSalary,
+      createdAt: negotiationRecord.createdAt
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
