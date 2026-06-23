@@ -1,14 +1,17 @@
 import { useState, useEffect } from 'react';
 import { Send, Copy, RefreshCw, Mail, History, Users } from 'lucide-react';
 import { networkingService } from '../services/api';
+import { useSelector } from 'react-redux';
 
 const Networking = () => {
+  const { user } = useSelector(state => state.auth);
   const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     recipientName: '',
     recipientRole: '',
     company: '',
+    recipientEmail: '',
     messageType: 'LinkedIn Connection'
   });
   const [currentGenerated, setCurrentGenerated] = useState(null);
@@ -34,7 +37,7 @@ const Networking = () => {
       const data = await networkingService.generateMessage(formData);
       setCurrentGenerated(data);
       setMessages([data, ...messages]);
-      setFormData({ recipientName: '', recipientRole: '', company: '', messageType: 'LinkedIn Connection' });
+      setFormData({ recipientName: '', recipientRole: '', company: '', recipientEmail: '', messageType: 'LinkedIn Connection' });
     } catch (error) {
       console.error('Failed to generate message', error);
       alert('Failed to generate message');
@@ -46,6 +49,22 @@ const Networking = () => {
   const handleCopy = (text) => {
     navigator.clipboard.writeText(text);
     alert('Message copied to clipboard!');
+  };
+
+  const handleSendEmail = (msgData) => {
+    let subject = `Connecting with ${user?.fullName || 'a professional'}`;
+    let body = msgData.generatedContent;
+    
+    // Parse subject if AI generated one
+    if (body.toUpperCase().startsWith('SUBJECT:')) {
+      const parts = body.split('\n');
+      subject = parts[0].replace(/SUBJECT:\s*/i, '').trim();
+      body = parts.slice(1).join('\n').trim();
+    }
+
+    const email = msgData.recipientEmail || formData.recipientEmail || '';
+    const url = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(email)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.open(url, '_blank');
   };
 
   return (
@@ -100,6 +119,21 @@ const Networking = () => {
               />
             </div>
 
+            {formData.messageType.includes('Email') && (
+              <div className="animate-in fade-in slide-in-from-top-2 duration-300">
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 flex items-center gap-2">
+                  Recipient Email <span className="text-xs text-slate-400 font-normal">(Optional)</span>
+                </label>
+                <input
+                  type="email"
+                  className="w-full rounded-md border border-slate-300 dark:border-slate-600 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-slate-900 dark:text-white"
+                  placeholder="e.g., recruiter@company.com"
+                  value={formData.recipientEmail}
+                  onChange={(e) => setFormData({ ...formData, recipientEmail: e.target.value })}
+                />
+              </div>
+            )}
+
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Their Role</label>
@@ -149,12 +183,22 @@ const Networking = () => {
             <div className="mt-8 pt-6 border-t border-slate-200 dark:border-slate-700">
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-sm font-bold text-emerald-600 dark:text-emerald-400">Generated Successfully!</h3>
-                <button
-                  onClick={() => handleCopy(currentGenerated.generatedContent)}
-                  className="text-slate-500 hover:text-blue-600 dark:text-slate-400 dark:hover:text-blue-400 flex items-center text-sm font-medium transition-colors"
-                >
-                  <Copy size={16} className="mr-1" /> Copy
-                </button>
+                <div className="flex gap-3">
+                  {currentGenerated.messageType.includes('Email') && (
+                    <button
+                      onClick={() => handleSendEmail(currentGenerated)}
+                      className="text-rose-600 hover:text-rose-700 dark:text-rose-400 dark:hover:text-rose-300 flex items-center text-sm font-bold transition-colors bg-rose-50 dark:bg-rose-900/30 px-3 py-1.5 rounded-lg"
+                    >
+                      <Mail size={16} className="mr-1.5" /> Send via Gmail
+                    </button>
+                  )}
+                  <button
+                    onClick={() => handleCopy(currentGenerated.generatedContent)}
+                    className="text-slate-600 hover:text-blue-600 dark:text-slate-400 dark:hover:text-blue-400 flex items-center text-sm font-bold transition-colors bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700"
+                  >
+                    <Copy size={16} className="mr-1.5" /> Copy
+                  </button>
+                </div>
               </div>
               <div className="bg-slate-50 dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-700 text-sm text-slate-700 dark:text-slate-300 whitespace-pre-wrap font-sans">
                 {currentGenerated.generatedContent}
@@ -186,13 +230,24 @@ const Networking = () => {
                       <h4 className="text-sm font-bold text-slate-900 dark:text-white">To: {msg.recipientName}</h4>
                       <p className="text-xs text-slate-500 dark:text-slate-400">{msg.recipientRole} at {msg.company}</p>
                     </div>
-                    <button
-                      onClick={() => handleCopy(msg.generatedContent)}
-                      className="opacity-0 group-hover:opacity-100 text-slate-400 hover:text-blue-600 transition-all"
-                      title="Copy Message"
-                    >
-                      <Copy size={16} />
-                    </button>
+                    <div className="flex gap-2">
+                      {msg.messageType.includes('Email') && (
+                        <button
+                          onClick={() => handleSendEmail(msg)}
+                          className="opacity-0 group-hover:opacity-100 text-rose-500 hover:text-rose-600 transition-all bg-rose-50 dark:bg-rose-900/20 p-1.5 rounded"
+                          title="Send via Gmail"
+                        >
+                          <Mail size={16} />
+                        </button>
+                      )}
+                      <button
+                        onClick={() => handleCopy(msg.generatedContent)}
+                        className="opacity-0 group-hover:opacity-100 text-slate-500 hover:text-blue-600 transition-all bg-slate-100 dark:bg-slate-800 p-1.5 rounded"
+                        title="Copy Message"
+                      >
+                        <Copy size={16} />
+                      </button>
+                    </div>
                   </div>
                   <div className="text-sm text-slate-600 dark:text-slate-300 line-clamp-3 mt-2 bg-slate-50 dark:bg-slate-900/50 p-2 rounded">
                     {msg.generatedContent}

@@ -18,6 +18,10 @@ const networkingMessageSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  recipientEmail: {
+    type: String,
+    required: false
+  },
   messageType: {
     type: String,
     enum: ['LinkedIn Connection', 'Cold Email', 'Follow-up Email'],

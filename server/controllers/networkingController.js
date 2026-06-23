@@ -7,7 +7,7 @@ import { generateAIResponse } from '../utils/aiHandler.js';
 // @access  Private
 export const generateMessage = async (req, res) => {
   try {
-    const { recipientName, recipientRole, company, messageType } = req.body;
+    const { recipientName, recipientRole, company, recipientEmail, messageType } = req.body;
     
     const user = await User.findById(req.user._id);
 
@@ -15,16 +15,16 @@ export const generateMessage = async (req, res) => {
     if (messageType === 'LinkedIn Connection') {
       lengthInstruction = "Keep it under 300 characters strictly.";
     } else if (messageType === 'Cold Email') {
-      lengthInstruction = "Make it 2-3 short paragraphs, highly engaging and professional.";
+      lengthInstruction = "Make it 2-3 short paragraphs, highly engaging and professional. First line MUST be 'SUBJECT: [Your Subject Here]'.";
     } else if (messageType === 'Follow-up Email') {
-      lengthInstruction = "Keep it brief, reiterating interest and thanking them for their time.";
+      lengthInstruction = "Keep it brief, reiterating interest and thanking them for their time. First line MUST be 'SUBJECT: [Your Subject Here]'.";
     }
 
     const prompt = `Write a ${messageType} for the applicant named ${user.fullName}.
     The message is directed to ${recipientName}, who is a ${recipientRole} at ${company}.
     The applicant's experience level is ${user.profile?.experienceLevel || 'professional'}.
     ${lengthInstruction}
-    Do not include placeholders, start directly with the greeting.`;
+    Do not include placeholders, start directly with the content (or SUBJECT if email).`;
 
     let generatedContent = await generateAIResponse(prompt);
 
@@ -38,6 +38,7 @@ export const generateMessage = async (req, res) => {
       recipientName,
       recipientRole,
       company,
+      recipientEmail,
       messageType,
       generatedContent
     });
